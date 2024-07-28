@@ -9,10 +9,20 @@ import time
 from typing import Literal
 from zlib import adler32
 
-GAME_CONFIG = {
-    "ROUNDS": 1,
-    "ROUND LENGTH": 5,
-    "ROUND END LENGTH": 5,
+
+GAME_CONFIG_PRESET = "dev"
+
+GAME_CONFIG_PRESETS = {
+    "dev": {
+        "ROUNDS": 1,
+        "ROUND LENGTH": 5,
+        "ROUND END LENGTH": 5,
+    },
+    "prod": {
+        "ROUNDS": 10,
+        "ROUND LENGTH": 10,
+        "ROUND END LENGTH": 5,
+    },
 }
 
 
@@ -150,6 +160,7 @@ class Game:
         self.players = []
         self.player_join(creator)
         self.callbacks = callbacks
+        self.deleteGame = deleteGame
 
     def start_game(self):
         """Starts the game. New players will be
@@ -177,7 +188,7 @@ class Game:
         :returns bool: Whether the game is still in progress.
         """
 
-        if self.state.currentRound > GAME_CONFIG["ROUNDS"]:
+        if self.state.currentRound > GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUNDS"]:
             self.state.roundProgress = "results"
             self.state.progress = "already done"
 
@@ -193,7 +204,10 @@ class Game:
             self.state.roundProgress = "uninit"  # unnecessary
 
         if self.state.roundProgress == "uninit":
-            if time.time() - self.state.lastTimeSnap < GAME_CONFIG["ROUND END LENGTH"]:
+            if (
+                time.time() - self.state.lastTimeSnap
+                < GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND END LENGTH"]
+            ):
                 return True
 
             self.state.lastTimeSnap = time.time()
@@ -226,11 +240,13 @@ class Game:
         if self.state.roundProgress == "pending":
             timeCompleted = time.time() - self.state.lastTimeSnap
 
-            if timeCompleted > GAME_CONFIG["ROUND LENGTH"]:
+            if timeCompleted > GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND LENGTH"]:
                 self.state.roundProgress = "results"
 
             self.callbacks.fwdTimeLeft(
-                self.gameId, GAME_CONFIG["ROUND LENGTH"] - round(timeCompleted)
+                self.gameId,
+                GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND LENGTH"]
+                - round(timeCompleted),
             )
 
             return True
