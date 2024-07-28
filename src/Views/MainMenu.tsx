@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import c from "../ComponentAliases";
-import { Platform } from "react-native";
 
 import * as ImageLibrary from "expo-image-picker";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function alert(title: string, body?: string) {
   Alert.alert(title, body);
@@ -29,6 +29,17 @@ function MainMenu(props: MainMenuProps) {
     if (Platform.OS == "android") {
       headerPadding[1](20);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!usernameInput[0]) return;
+    AsyncStorage.setItem("saved username", usernameInput[0]);
+  }, [usernameInput]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("saved username").then(name => {
+      if (name) usernameInput[1](name);
+    });
   }, []);
 
   async function pickImages() {
