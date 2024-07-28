@@ -1,0 +1,25 @@
+{
+  "name": "whotookthatphoto",
+  "version": "0.0.1",
+  "main": "expo/AppEntry.js",
+  "scripts": {
+    "dev": "expo"
+  },
+  "dependencies": {
+    "@types/react": "~18.2.79",
+    "@ungap/structured-clone": "^1.2.0",
+    "expo": "~51.0.21",
+    "expo-image-picker": "~15.0.7",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-native": "0.74.3",
+    "react-native-progress": "^5.0.1",
+    "socket.io-client": "^4.7.5",
+    "typescript": "~5.3.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/ungap__structured-clone": "^1.2.0"
+  },
+  "private": true
+}

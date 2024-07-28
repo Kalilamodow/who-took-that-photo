@@ -1,0 +1,6 @@
+.vscode/
+.expo/
+node_modules/
+__pycache__/
+scripts/
+notes.txt

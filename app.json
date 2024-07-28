@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Who Took That Photo",
+    "slug": "WhoTookThatPhoto",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#282828"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app needs your photo library to play the game."
+        }
+      ]
+    ]
+  }
+}
