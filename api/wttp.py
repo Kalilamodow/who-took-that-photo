@@ -123,7 +123,7 @@ class Game:
     creator: str
 
     # game state
-    state = GameState()
+    state: GameState
     # callbacks
     callbacks: GameCallables
 
@@ -144,6 +144,9 @@ class Game:
         :param deleteGame: Called to remove it when the game is finished.
         """
 
+        # note: state must be initialized in __init__
+        # and not a default in the pre-initialized variables
+        self.state = GameState()
         self.gameId = gameId
         self.creator = creator.uid
         self.players = []
@@ -163,6 +166,7 @@ class Game:
         self.state.progress = "in progress"
 
         self.callbacks.setRound(self.gameId, 0)
+        print("game", self.gameId, "started.")
 
         t = True
         while t:
@@ -170,6 +174,7 @@ class Game:
             # prevent high cpu
             time.sleep(0.5)
 
+        print("game", self.gameId, "ended.")
         self.deleteGame(self.gameId)
 
     def _tick(self) -> bool:

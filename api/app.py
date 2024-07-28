@@ -45,8 +45,6 @@ def wsc_ask_create(playerName: str):
     gameId = manager.create_game(playerName, sid)
     sio.join_room(gameId, sid)
 
-    print("game", gameId, "created by", sid)
-
     return gameId
 
 
@@ -80,7 +78,7 @@ def wsc_ask_get_players_in_game(gameId: str):
 
     _ = game.players  # force evaluation otherwise it's empty
     players = [p.name for p in game.players]
-    print(players)
+
     return players
 
 
