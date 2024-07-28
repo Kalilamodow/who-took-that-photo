@@ -9,21 +9,10 @@ import time
 from typing import Literal
 from zlib import adler32
 
+from configreader import get_config
 
-GAME_CONFIG_PRESET = "dev"
 
-GAME_CONFIG_PRESETS = {
-    "dev": {
-        "ROUNDS": 1,
-        "ROUND LENGTH": 5,
-        "ROUND END LENGTH": 5,
-    },
-    "prod": {
-        "ROUNDS": 10,
-        "ROUND LENGTH": 10,
-        "ROUND END LENGTH": 5,
-    },
-}
+GAME_CONFIG = get_config("dev")
 
 
 def createGameID(salt: str, cutoff: int = 5):
@@ -188,7 +177,7 @@ class Game:
         :returns bool: Whether the game is still in progress.
         """
 
-        if self.state.currentRound > GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUNDS"]:
+        if self.state.currentRound > GAME_CONFIG["round_amt"]:
             self.state.roundProgress = "results"
             self.state.progress = "already done"
 
@@ -204,10 +193,7 @@ class Game:
             self.state.roundProgress = "uninit"  # unnecessary
 
         if self.state.roundProgress == "uninit":
-            if (
-                time.time() - self.state.lastTimeSnap
-                < GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND END LENGTH"]
-            ):
+            if time.time() - self.state.lastTimeSnap < GAME_CONFIG["inter_len"]:
                 return True
 
             self.state.lastTimeSnap = time.time()
@@ -240,13 +226,12 @@ class Game:
         if self.state.roundProgress == "pending":
             timeCompleted = time.time() - self.state.lastTimeSnap
 
-            if timeCompleted > GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND LENGTH"]:
+            if timeCompleted > GAME_CONFIG["round_len"]:
                 self.state.roundProgress = "results"
 
             self.callbacks.fwdTimeLeft(
                 self.gameId,
-                GAME_CONFIG_PRESETS[GAME_CONFIG_PRESET]["ROUND LENGTH"]
-                - round(timeCompleted),
+                GAME_CONFIG["round_len"] - round(timeCompleted),
             )
 
             return True
@@ -389,7 +374,7 @@ class GamesManager:
             createGameID(salt),
             PlayerData(creatorName, sid),
             self.funcs,
-            self.remove_game
+            self.remove_game,
         )
 
         self.games.append(game)

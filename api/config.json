@@ -1,0 +1,14 @@
+[
+  {
+    "name": "dev",
+    "round_amt": 2,
+    "round_len": 5,
+    "inter_len": 5
+  },
+  {
+    "name": "prod",
+    "round_amt": 10,
+    "round_len": 10,
+    "inter_len": 5
+  }
+]

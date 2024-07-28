@@ -31,8 +31,8 @@ class JoinRequest(TypedDict):
 @socketio.on("c:ask:config")
 def wsc_ask_config():
     c = {
-        "rounds": GAME_CONFIG["ROUNDS"],
-        "roundLength": GAME_CONFIG["ROUND LENGTH"],
+        "rounds": GAME_CONFIG["round_amt"],
+        "roundLength": GAME_CONFIG["round_len"],
     }
 
     return c

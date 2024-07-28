@@ -21,7 +21,10 @@ export default function App() {
   const currentColorScheme = useColorScheme();
 
   useEffect(() => {
-    setActiveClient(new WTTPClient("http://10.0.0.134:5000"));
+    const url = process.env.EXPO_PUBLIC_BACKEND;
+    if (!url)
+      throw new Error("no backend url provided in enviroment vars");
+    setActiveClient(new WTTPClient(url));
   }, []);
 
   useEffect(() => {
