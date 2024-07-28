@@ -1,0 +1,1 @@
+clear && npx expo start

@@ -1,0 +1,1 @@
+D:\apps\AndroidStudioCL\emulator\emulator.exe -avd small_phone -no-cache
